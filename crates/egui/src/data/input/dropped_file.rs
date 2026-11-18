@@ -40,12 +40,12 @@ pub trait DroppedFile: core::fmt::Debug {
 }
 
 /// A shared reference to a dropped file.
-#[cfg(not(all(target_arch = "wasm32", target_feature = "atomics")))]
+#[cfg(not(all(target_arch = "wasm32", target_os = "unknown", target_feature = "atomics")))]
 pub type DroppedFileHandle = Arc<dyn DroppedFile + Send + Sync>;
 
 /// A shared reference to a dropped file.
 ///
 /// This is not necessarily `Send + Sync` when wasm threads are enabled, because
 /// [`web_sys::File`] is not thread-safe in that configuration.
-#[cfg(all(target_arch = "wasm32", target_feature = "atomics"))]
+#[cfg(all(target_arch = "wasm32", target_os = "unknown", target_feature = "atomics"))]
 pub type DroppedFileHandle = Arc<dyn DroppedFile>;
